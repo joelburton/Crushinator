@@ -4,3 +4,4 @@ bin/*
 parts/*
 eggs/*
 develop-eggs/*
+*.pyc

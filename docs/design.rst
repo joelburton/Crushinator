@@ -212,8 +212,9 @@ A few possibilities that the framework should accomodate:
    - Ncurses (windowed UI in a console environment, least important)
    - Desktop (GTK+, wxWindows, Qt, Tkinter, etc)
    - The web (WSGI), also XMLRPC/SOAP/REST
+   - IDEs (Eclipse, WingIDE)
    
-The only hard requirements at this point are the console, WSGI, and some desktop
+The only hard requirements at this point are the console, WSGI, Eclipse, and some desktop
 application, in that order of precedence.
 
 Record Previous Generation Parameters
@@ -345,7 +346,6 @@ These should all apply to the **python egg** generator, and any derivitive produ
 See:
    - http://sphinx.pocoo.org/config.html#build-config
    - http://svn.zope.org/zope.testing/trunk/
-   
 
 Implementation Details
 ======================

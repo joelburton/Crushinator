@@ -427,7 +427,7 @@ customize, replace, or reorganize parts of the typical ``crushinator`` module st
 
 This is the area where the ZopeSkel 'easy' mode might come into play. The Plone community could create a tool that is tailored to what they refer to as 
 *integrators*: developers, content managers and the like who don't typically write much code (but are quite often required to do so). Integrators tend to 
-need reliable ways to add or build features to their plone deployments, and often don't have time or the specific skill to fully implement the finer
+need reliable ways to add or build features in to their plone deployments, and often don't have time or the specific skill to fully implement the finer
 details of say, python eggs or Archetypes content types. This theorhetical ``easy-skel`` application could utilize the code generators of 
 the ``crushinator.plone`` namespace, but provide sane defaults and specially tailored prompts on the user interface side. It could also provide
 features that might be outside the scope of ``crushinator``, like downloading the Unified Installer and installing their code directly in 
@@ -440,6 +440,8 @@ specific use cases.
 
 UML Overview
 ------------
+TODO
+####
 
 Standardize Nomenclature
 ------------------------

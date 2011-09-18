@@ -10,7 +10,7 @@ Crushinator: A Gode Generation Framework and Toolkit
 
 Welcome
 =======
-This is the root of the ``Crushinator`` project, a special one-stop package
+This is the root of the ``Crushinator`` project, a special one-stop repository
 that combines the development (and installation) of several independant 
 (but related) python packages:
 
@@ -18,39 +18,50 @@ that combines the development (and installation) of several independant
     projects implment.
   - ``crushinator.toolkit``, a set of common implementations of various components covering
     many different use-cases. 
-  - ``crushinator.frontends``, a set of reference implementations showing the different types 
+  - ``Crushinator``, a set of reference implementations showing the different types 
     of front-end user interfaces. Considered production-quality code, and safe to use in lieu 
-    of (or in tandem with) another preferred front-end user interface.
-  - ``crushinator.runners``, complete implementations for a few code generation systems
-    considered of universal appeal. Also serves as the 'proof-of-concept' implementations
-    of the framework.
+    of (or in tandem with) another preferred front-end user interface. Installs a central
+    **crushinator** script if installed directly.
+  - ``crushinator.integrationtests``, a special egg containing integration tests. **Not released.** 
     
-The general idea is that if you want to work on the ``Crushinator`` project, you are
-encouraged to clone this entire repository, and run **all** of the tests. 
-
-This will ensure that the 'batteries' that are included will continue to be properly 
-*charged*.
+.. note:: There will most likely be a few more support packages, covering more broad implementations
+          of some of the components of the ``Crushinator`` package. These will be stored in separate
+          python eggs. The idea is that if you want to use a particular implementation of a component, 
+          but don't need the full implementation (or you want to wrap it.)
+          
+          A good example might be a generation system that builds Djang-based apps. There may be a big 
+          savings in time if you can extract just the ``Seletons`` and extend the ``User Interfaces``,
+          instead of depending on the whole ``Crushinator`` package.
+    
+Consider this repository a suite of packages. Each should be autonomous (save for a dependancy on
+``crushinator.framework``), and can be developed and tested separately. They're brought together here,
+not just to keep the author's administration headache to a minimum, keeping issues, documentation, and other
+artifacts in a central place, but also to allow a logical location for broader integration tests.
 
 Directory Structure
 ===================
-This README is at the root of a python egg, ``Crushinator``, which provides the
-``crushinator.framework`` package. 
+This README lives within a zc.buildout structure, used for testing and to provide a consistent, *almost instant*
+development environment.
 
 The ``src`` directory contains the source code for ``crushinator.framework``, and the other 
-packages described above. With the exception of ``crushinator.framework``, each subdirectory
-within is a complete python egg file structure. 
+packages described above. Each subdirectory within is a complete python egg file structure. 
 
 The ``docs`` folder contains design, implementation, and userland documentation. It (like
 this file) is written in reStructuredText, and is written for documentation to be generated
-with ``Sphinx``. 
+with ``Sphinx``.
 
-Installation of the main ``Crushinator`` egg in this package does **not** install the other packages,
-nor does installing one of them automatically install any others (at least not the version 
-you've got checked out; any dependant packages will be pulled from PyPi in the event 
-they've been released). 
+Each egg structure in ``src`` mirrors this one in terms of documentation. There is a ``README.rst`` file explaining what the package does and quick start/installation instructions.
+
+Each egg also contains a ``docs`` directory, containing more detailed documentation, API references, userland docs, etc.
+
+Unit and functional tests are located in the ``tests`` directory within the module structure (e.g. ``crushinator.framework.tests``). 
 
 See `Developing Crushinator`_ for further details and instructions on using the 
 included ``buildout.cfg`` (the recommended method), or a ``virtualenv`` environment.
+
+See `Testing Crushinator`_ for more information about writing and running tests.
+
+See `Documenting Crushinator`_ for documentation guidelines and instructions on generating the user manual.
 
 Release Numbers Explained
 =========================
@@ -105,3 +116,24 @@ Using a Virtualenv
 ------------------
 TODO
 ~~~~
+
+Documenting Crushinator
+=======================
+Documentation Guidelines
+------------------------
+TODO
+~~~~
+
+Generating The User Manual
+--------------------------
+TODO
+~~~~
+
+Testing Crushinator
+===================
+Running the Tests
+-----------------
+TODO
+~~~~
+
+

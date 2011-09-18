@@ -308,10 +308,6 @@ The system could also provide plug-in points for each component of the system, s
 be constructed with very little code, just a few lines pulling in the required pieces from the core of the system, and
 augmenting with replacement components as needed.
 
-.. note:: At this point, I don't see a really clear use case for this last paragraph. As such, I'd consider it a less important requirement. However, given
-          that crushinator is both a tool and a framework, I think satisfying it in the fist couple of releases is probably a good idea. It will help enforce 
-          separation of concerns and modularity.
-
 Proof-of-Concept Implementations
 ================================
 It will be necessary to ensure the framework is flexible and useful enough for public release by

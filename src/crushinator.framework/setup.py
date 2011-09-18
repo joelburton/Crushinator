@@ -17,13 +17,13 @@ setup(name='Crushinator',
       author_email='lionface.lemonface@gmail.com',
       url='https://github.com/jjmojojjmojo/Crushinator/',
       license='GPL',
-      packages=find_packages('src'),
-      package_dir = {'': 'src'},
+      packages=find_packages(),
       namespace_packages=['crushinator', 'crushinator.framework'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'argparse',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

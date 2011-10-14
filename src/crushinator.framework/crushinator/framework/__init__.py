@@ -14,8 +14,3 @@ except ImportError:
 logger = logging.getLogger('crushinator.framework')
 logger.setLevel(logging.DEBUG)
 logger.addHandler(NullHandler())
-
-from collector import Collector
-from runner import Runner
-from ui import UserInterface
-

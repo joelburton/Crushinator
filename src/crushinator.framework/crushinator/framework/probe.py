@@ -46,11 +46,7 @@ class Probe(object):
         May raise a ProbeValidationError if the value isn't valid.
         
         Must raise StopIteration if there are no more Probes or Interrogations to
-        move to.
-        
-        @param value: string, used in place of the current value of this Probe. 
-                      Useful for peeking into what might be coming.
-                      
+        move to.      
         """
         
     def validate(self, value=None):

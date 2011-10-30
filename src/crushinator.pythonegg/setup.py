@@ -1,15 +1,25 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1.0'
+version = '0.1'
 
-setup(name='crushinator.toolkit',
+long_description = (
+    open('README.txt').read()
+    + '\n' +
+    'Contributors\n'
+    '============\n'
+    + '\n' +
+    open('CONTRIBUTORS.txt').read()
+    + '\n' +
+    open('CHANGES.txt').read()
+    + '\n')
+
+setup(name='crushinator.pythonegg',
       version=version,
-      description="",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+      description="Code generator tool to build a python egg package",
+      long_description=long_description,
       # Get more strings from
-      # http://pypi.python.org/pypi?:action=list_classifiers
+      # http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Programming Language :: Python",
         ],
@@ -17,8 +27,9 @@ setup(name='crushinator.toolkit',
       author='',
       author_email='',
       url='http://svn.plone.org/svn/collective/',
-      license='GPL',
-      packages=find_packages(exclude=['ez_setup']),
+      license='gpl',
+      packages=find_packages('src'),
+      package_dir = {'': 'src'},
       namespace_packages=['crushinator'],
       include_package_data=True,
       zip_safe=False,

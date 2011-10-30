@@ -30,3 +30,8 @@ class ProbeNotFound(Exception):
     """
     Raised when a probe is being located, and it does not exist.
     """
+    
+class SkeletonFileExists(Exception):
+    """
+    Raised when a file already exists.
+    """

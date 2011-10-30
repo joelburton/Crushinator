@@ -3,7 +3,7 @@ import os
 
 version = '0.1.0'
 
-setup(name='Crushinator',
+setup(name='crushinator.framework',
       version=version,
       description="",
       long_description="",

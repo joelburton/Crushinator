@@ -1,0 +1,3 @@
+from someplace import ${foo}
+
+Some text here, ${baz} and some more. $$500.00 reward for ${bar}

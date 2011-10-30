@@ -23,6 +23,7 @@ setup(name='Crushinator',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'crushinator.pythonegg',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

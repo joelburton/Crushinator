@@ -26,34 +26,92 @@ class Probe(object):
            unclear at this point.
     """
     name = None
-    default = None
-    value = None
-    _value = None
+    default = ''
+    _value = ''
     label = None
     description = None
     interrogation = None
     
-    def __init__(self, name, **kwargs):
-        self.name = name
+    def __init__(self, **kwargs):
+        """
+        Constructor - initialize variables
+        """
+        for k,v in kwargs.iteritems():
+            setattr(self, k, v)
         
-        self.__dict__.update(kwargs)
+        self.reset()
     
     def next(self, value=None):
         """
-        Return a probe name, the next Probe or Interrogation, given a certain
+        Return a probe name, or Interrogation, given a certain
         value
         
         May raise a ProbeValidationError if the value isn't valid.
         
-        Must raise StopIteration if there are no more Probes or Interrogations to
-        move to.      
+        Must raise StopIteration to cease looping.
         """
-        
-    def validate(self, value=None):
+        return None
+    
+    @property
+    def value(self):
         """
-        Check if this probe currently contains a valid value, or pass a value
-        to check against (useful for prevalidating). 
+        Getter for the value of this probe. Provides a hook for coerce() below
+        """
+        return self.coerce()
+    
+    @value.setter
+    def value(self, value):
+        """
+        Setter for the value of this probe. Provides a hook for save() below
         
+        @todo: should this ensure the value is a string?
+        """
+        self.save(value)
+    
+    @value.deleter
+    def value(self):
+        """
+        Deleter added for the sake of completeness. Provides hook for delete() method
+        below
+        """
+        self.delete()
+    
+    def coerce(self):
+        """
+        Convert the string value of this probe into a python type
+        
+        @note: this method should not swallow any exceptions, or try to validate the value.
+        @see: Probe.validate()
+        """
+        return self._value
+        
+    def save(self, value):
+        """
+        Provided to allow the developer to manipulate the value before its saved
+        
+        Stripping leading/trailing whitespace seems reasonable for most probes, so 
+        the base implementation is doing it too.
+        
+        @TODO: would it be better to break this out into a child class?
+        """
+        self._value = value.strip()
+        
+    def delete(self):
+        """
+        Provided to allow the developer to do something special when the value of 
+        this probe is deleted
+        """
+        del self._value
+    
+    def validate(self):
+        """
+        Check if this probe currently contains a valid value.
         Raises a ProbeValidationError if the value doesn't check out.
         """
         return True
+        
+    def reset(self):
+        """
+        Return to the default value
+        """
+        self._value = self.default

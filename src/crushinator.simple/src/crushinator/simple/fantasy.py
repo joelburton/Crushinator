@@ -11,6 +11,11 @@ from crushinator import SimpleRecipe, ...
 # allows for easy creation of "standard" kind of recipes.
 #
 # Author: Joel Burton <joel@joelburton.com>
+#
+# Written and discussed at Crushinator sprint, SF Conference Nov 2011
+#
+# Names of presumptive classes/factory methods here ("TemplateSkeleton", et al)
+# are merely under-thought-out suggestion; don't read these as canonical.
 
 
 # We'll have one interrogator with one one "probe" (question)

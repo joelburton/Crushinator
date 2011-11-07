@@ -5,7 +5,7 @@ Interrogations relevant to generating python package structures.
 from crushinator.framework.interrogation import Interrogation
 from crushinator.framework.probe import Probe
 
-from crushinator.framework.probes import PythonIdentifier, PythonPackageName, Email
+from crushinator.toolkit.probes import PythonIdentifier, PythonPackageName, Email
 
 class PackageMeta(Interrogation):
     """

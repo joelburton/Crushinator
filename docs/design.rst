@@ -396,7 +396,7 @@ would text for user prompts be handled?**
     
 The concept to take away from this example is that we thought about the approach, and the need for generalization of the solution to this problem, and came up with a generic solution that
 both covers most of our existing use cases, and is flexible enough to cover some we don't forsee. In the case of HTML output in a web-based user interface, 
-such formatting could greatly increase the usability of the system, but using HTML would prove prolematic for console or desktop-based UIs. Developers creating generation tools
+such formatting could greatly increase the usability of the system, but using HTML would prove problematic for console or desktop-based UIs. Developers creating generation tools
 might not know what UI the user will be using. 
 
 Using an intermediate markup and targeting the rendering to the user interface keeps concerns separated, but provides maximum utility for those concerns.

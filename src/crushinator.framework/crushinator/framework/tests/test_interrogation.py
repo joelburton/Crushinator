@@ -49,13 +49,37 @@ class TestInterrogation(unittest.TestCase):
             
         return mixer
         
-    def test_probecollection(self):
+    def test_probelookup(self):
         """
-        Test the probe iteration properties
+        Test the probe lookup
         """
         intero = self._class('helloworld')
         
         self.assertEqual(intero.name.name, 'name')
+        
+    def test_probe_iter(self):
+        """
+        Make sure that looping over the Interrogation produces the probes in the 
+        right order
+        """
+        
+        
+    def test_probe_process(self):
+        """
+        Test the process() method of the Interrogation
+        """
+        
+    def test_interrogation_jump_probe_iter(self):
+        """
+        Test what happens when iterating through an Interrogation and a probe 
+        returns a different probe.
+        """
+        
+    def test_interrogation_jump_interrogation_iter(self):
+        """
+        Test what happens when iterating through an Interrogation and a probe
+        returns an interrogation
+        """
         
     def test_properties(self):
         """

@@ -27,7 +27,7 @@ class __interrogation_meta__(type):
         @TODO: a way to change just a setting or two on a inherited probe? maybe pass
                a dict of values? A special ProbeDict object?
         """
-        probes = OrderedDict
+        probes = OrderedDict()
         newdct = {}
         
         for base in bases:
@@ -82,21 +82,6 @@ class Interrogation(object):
         Getter - returns a list of probes
         """
         return self._probes
-    
-    @probes.setter
-    def probes(self, probes):
-        """
-        Setter - takes a list of probe objects.
-        
-        Sets the default value from self.properties['defaults'] - also resets this Interrogation.
-        """
-        self._probes = probes
-        
-        for probe in self._probes:
-            if probe.name in self.defaults:
-                probe.default = self.defaults[probe.name]
-            
-        self.reset()
     
     def reset(self):
         """

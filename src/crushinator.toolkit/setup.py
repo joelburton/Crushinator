@@ -27,6 +27,9 @@ setup(name='crushinator.toolkit',
           'crushinator.toolkit',
           # -*- Extra requirements: -*-
       ],
+      tests_require=[
+          'crushinator-dummyegg',
+      ],
       entry_points="""
       # -*- Entry points: -*-
       """,

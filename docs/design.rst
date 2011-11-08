@@ -435,6 +435,8 @@ something like "the content package of the current Dexterity content-type produc
 "Show Recipe?"
 --------------
 
+(In the API for the recipe, this method is "suggest").
+
 Recipes will have a method to determine whether the recipe should appear in listings of useful
 recipes.
 
@@ -456,7 +458,8 @@ For example, at the root of a Dexterity content types product:
 ``.crushed``::
 
     [crushinator.plone.dexterity]
-    __root__ = /home/joel/software/my-dex-product     { this is top of created thing }
+    __root__ = .                                      { this is top of created thing }
+    __version__ = 1.0
     var1 = answer1                                    { answers to asked questions }
     var2 = answer2
 
@@ -465,19 +468,35 @@ Further, down, this wouldn't repeat all of the Q/As:
 ``somedir/.crushed``::
 
     [crushinator.plone.dexterity]
-    __root__ = /home/joel/software/my-dex-product     { this is top of created thing }
+    __root__ = ..                                     { top of created thing is one level up }
+    __version__ = 1.0
 
 Further, in a "tests" subdirectory made by another recipe:
 
 ``somedir/tests/.crushed``::
 
     [crushinator.plone.dexterity]
-    __root__ = /home/joel/software/my-dex-product     { this is top of created thing }
+    __root__ = ../..                                  { this is top of created thing }
+    __version__ = 1.0
 
     [crushinator.plone.cooltests]
-    __root__ = /home/joel/software/my-dex-product/somedir/tests   {root of this}
+    __root__ = .                                                  {root of this}
+    __version__ = 1.0
     var1 = answer1           
     var2 = answer2
+
+In then somewhere inside "tests":
+
+``somedir/tests/subdir/.crushed``::
+
+    [crushinator.plone.dexterity]
+    __root__ = ../../..                               { this is top of created thing }
+    __version__ = 1.0
+
+    [crushinator.plone.cooltests]
+    __root__ = ..                                                 {root of this}
+    __version__ = 1.0
+
 
 This way, at any point, Crushinator can determine what "localish" recipes would be applicable
 and, if needed, go up and find the originally-given answers.

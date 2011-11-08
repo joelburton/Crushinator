@@ -294,6 +294,8 @@ Some initial ideas to implement:
 .. note:: The variable names specified here are **not** part of the requirement. The final names should reflect
           some sort of consensus amoungst the greater community.
 
+
+
                 
 Plugin Architecture
 -------------------
@@ -378,6 +380,109 @@ use cases as possible, or it has to be desinged to be easily adaptable to new us
 It would be an important aspect of the framework to provide maximum flexibility for the users, but make the best possible effort
 to enforce the extensibility and reusability of derivitive code. The real utility of a framework like this is how easy it is 
 to piece together disparate code structures and features into targeted tools that can be highly tailored.
+
+
+Complexity Level
+----------------
+To facilitate the development of recipes that provide different interrogation or output depending
+on user sophistication level, a "complexity level" will be implemented.
+
+Each interrogation and/or probe can specify the complexity of a question--with 1 being applicable-for-all
+and 5 being only of interest to the most technical (this will default to 1, so that receipe developers
+that don't use this feature will not be affected by it).
+
+The UIs for Crushinator will provide a means for users to restrict their complexity level, so
+users might choose "1" to only get basic questions, "3" for "average" questions
+(what UIs should choose as the default) or "5" for obscure/technical questions.
+
+As a special case, a negative complexity level can also be provided with a interrogations/probes;
+in this case, users will get this question only if their level is *equal or lower* than the absolute
+value of the level--this allows for questions that only appear for basic users, without other users
+being pestered by them.
+
+As examples::
+
+
+  Complexity 1: What is the name of your product?
+    --> Everyone should see
+  Complexity 5: Do you want test cases camel cased?
+    --> Unimportant to almost everyone
+
+  Complexity -2: Do you want a EXAMPLES.txt showing examples of this?
+    --> Only show to relatively basic users
+
+
+"Forcing"
+---------
+
+Skeletons could detect that the user may be using a recipe that is not appropriate (output directories
+that are expected may be missing, for example). The user should be able to choose whether to
+attempt to run the recipe, even in the face of problems.
+
+If a "force" option is chosen in the Controller UI, skeletons should attempt to proceed, whenever
+possible. If this is not chosen, they can raise fatal and terminating errors more freely.
+
+
+Roots
+-----
+
+A recipe should try to detect the "root" for itself--where the output files should be created.
+
+For recipes that wouldn't traditionally be "local commands", this will typically be "the current
+directory". For recipes that are analogous to traditional local commands, this may result in
+something like "the content package of the current Dexterity content-type product".
+
+"Show Recipe?"
+--------------
+
+Recipes will have a method to determine whether the recipe should appear in listings of useful
+recipes.
+
+For non-local command style recipes, this is likely to be a simple "return True"--these should always
+be suggested.
+
+For "local command" analagous recipes, this can use various logic to determine if the recipe
+is applicable--for instance, are we in a Dexterity product and therefore, it should be appropriate to
+add a content type?
+
+Dot Crushed
+-----------
+
+Crushinator will be ``.crushed`` files in directories it creates. These will include information
+about the "Root" of the recipe, which recipes were used, and the answers of questions.
+
+For example, at the root of a Dexterity content types product:
+
+``.crushed``::
+
+    [crushinator.plone.dexterity]
+    __root__ = /home/joel/software/my-dex-product     { this is top of created thing }
+    var1 = answer1                                    { answers to asked questions }
+    var2 = answer2
+
+Further, down, this wouldn't repeat all of the Q/As:
+
+``somedir/.crushed``::
+
+    [crushinator.plone.dexterity]
+    __root__ = /home/joel/software/my-dex-product     { this is top of created thing }
+
+Further, in a "tests" subdirectory made by another recipe:
+
+``somedir/tests/.crushed``::
+
+    [crushinator.plone.dexterity]
+    __root__ = /home/joel/software/my-dex-product     { this is top of created thing }
+
+    [crushinator.plone.cooltests]
+    __root__ = /home/joel/software/my-dex-product/somedir/tests   {root of this}
+    var1 = answer1           
+    var2 = answer2
+
+This way, at any point, Crushinator can determine what "localish" recipes would be applicable
+and, if needed, go up and find the originally-given answers.
+
+
 
 Application Example
 ###################
@@ -477,26 +582,26 @@ So now we can break down the individual actions into generic terms (which will u
 :Skeleton: A code-generator. It takes information collected from one or many *Interrogations* (and *Probes*), and generates code. 
 :Injector: A code-generator. It takes information collected from one or many *Interrogations* (and *Probes*), and generates code that is then *inserted into existing files*.
 :User Interface: Literally, a user interface. Provides user interaction.
-:Runner: A collection of *Interrogations* and *Skeletons*. 
+:Recipe: A collection of *Interrogations* and *Skeletons*. 
 :Collector: Seeker of default values.
-:Historian: Recorder of and source for information about previous *Interrogations*, *Skeletons*, and *Runners*.
-:Aggregator: Seeker of *Runners*.
+:Historian: Recorder of and source for information about previous *Interrogations*, *Skeletons*, and *Recipes*.
+:Aggregator: Seeker of *Recipes*.
 
 ...and go back through the business process outline, using the new terms to explain how they interrelate (also merging the two use cases
 since they are interchangable now):
 
 #. User invokes a *User Interface*.
-#. The *User Interface* calls one or more *Aggregators* to get a list of *Runners*, which is presented to the user.
+#. The *User Interface* calls one or more *Aggregators* to get a list of *Recipes*, which is presented to the user.
 #. The *User Interface* calls one or more *Collectors* to get default values.
-#. The User selects or invokes a specific *Runner*. 
-#. The *Runner* may consult a *Historian* to see what's happened before.
-#. The *Runner* and the *User Interface* communicate back and fourth in chunks; The *User Interface* asks the *Runner* for the current *Probes* to present to the User. The *User Interface* can pass
+#. The User selects or invokes a specific *Recipe*. 
+#. The *Recipe* may consult a *Historian* to see what's happened before.
+#. The *Recipe* and the *User Interface* communicate back and fourth in chunks; The *User Interface* asks the *Recipe* for the current *Probes* to present to the User. The *User Interface* can pass
    default values attained from the *Collectors* used.
-#. The *User Interface* uses the *Probes* to get values from the user, and passes those values back to the *Runner*. 
+#. The *User Interface* uses the *Probes* to get values from the user, and passes those values back to the *Recipe*. 
 #. Validation happens, and can potentially happen twice, or in multiple passes; the *User Inteface*
-   is free to alert the user of problems, but ultimately the *Runner* will decide if the values are adequate. 
-#. The *Runner* then responds with more *Probes*, or some sort of error as necessary.
-#. The *Runner* invokes one or more *Skeletons* and/or *Injectors*, utilizing the values attained via the *Probes*.
+   is free to alert the user of problems, but ultimately the *Recipe* will decide if the values are adequate. 
+#. The *Recipe* then responds with more *Probes*, or some sort of error as necessary.
+#. The *Recipe* invokes one or more *Skeletons* and/or *Injectors*, utilizing the values attained via the *Probes*.
 
 Here's a diagram showing the (rough) relationships:
 
@@ -539,8 +644,8 @@ and parsing those sources.
 
 Aggregator
 ..........
-There needs to be a module that is responsible for identifying and locating *Runners* and invoking them. For this we use the term ``Aggregator``, since
-the module in question is litterally *aggregating* ``Runners`` into a single list. How Aggregators identify Runners is up to the individual Aggregator.
+There needs to be a module that is responsible for identifying and locating *Recipes* and invoking them. For this we use the term ``Aggregator``, since
+the module in question is litterally *aggregating* ``Recipes`` into a single list. How Aggregators identify Recipes is up to the individual Aggregator.
 
 User Interface
 ..............
@@ -564,10 +669,13 @@ in two files. It lacks some flexibility (and accuracy) because it relies on a fi
 Implementing this feature in ``crushinator``, a specialized *Injector* might be used to load the code into a sort of sandbox environment, and then use python's reflection/introspection modules
 to identify where *precicesly* to add the needed code, and avoid adding it if it would create a syntax error or namespace collision. 
 
-Runner
+Recipe 
 ......
-A *Runner* literally runs the code generation. It acts as a controller, communicating with the *User Interface* to solicit the necessary information from the user, and then execute the required *Skeletons* and/or 
-*Injectors*. The term also leaves the door open for extended functionality; a *Runner* could also execute system commands, download packages, integrate with VCS systems, etc.
+
+(Formerly called "Runner")
+
+A *Recipe* literally runs the code generation. It acts as a controller, communicating with the *User Interface* to solicit the necessary information from the user, and then execute the required *Skeletons* and/or 
+*Injectors*. The term also leaves the door open for extended functionality; a *Recipe* could also execute system commands, download packages, integrate with VCS systems, etc.
 
 Historian
 .........
@@ -584,7 +692,7 @@ Implementation Details: Allow For Multiple, Simultaineous User Interfaces
 To specifically meet this requirement, the *User Interface* component must be a single, extensible class
 with a well-defined API.
 
-The *User Interface* acts as the intermediary between *Runners* and the User, so it would plug into the system as an
+The *User Interface* acts as the intermediary between *Recipes* and the User, so it would plug into the system as an
 entry point (see `Implementation Details: Plugin Architecture`_), and specifically in the setuptools-wide, ``console_scripts``
 entry point.
 
@@ -622,7 +730,7 @@ Here's a rough sketch of what the class will look like:
         
         def __call__():
             """
-            The nerve center of the class; communicates with Runners and the User.
+            The nerve center of the class; communicates with Recipes and the User.
             """
         
         def defaults():
@@ -665,8 +773,8 @@ order of precedence:
   * keyword arguments passed to the ``Collector.__init__()`` method.
 
 In terms of files, default values must be specified in `ConfigParser`_ format. Sections will correspond
-to specific *Runner* classes, and can contain one ``[globals]`` section. The idea here is that it will be 
-possible to specify generic values, and then very specific ones for specific *Runners*. 
+to specific *Recipe* classes, and can contain one ``[globals]`` section. The idea here is that it will be 
+possible to specify generic values, and then very specific ones for specific *Recipes*. 
 
 Rough sketch of the base ``Collector`` class:
 
@@ -681,8 +789,8 @@ Rough sketch of the base ``Collector`` class:
             
         def __call__(caller=None):
             """
-            Returns a dictionary of values for a specific Runner class (can be passed as a Runner object); ignores 
-            runner-class sections if caller is not specified.
+            Returns a dictionary of values for a specific Recipe class (can be passed as a Recipe object); ignores 
+            recipe-class sections if caller is not specified.
             """
 
 
